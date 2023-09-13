@@ -1,5 +1,5 @@
-const { $ } = require('@wdio/globals')
-const Page = require('./page');
+import { $ } from '@wdio/globals';
+import Page from './page';
 
 /**
  * sub page containing specific selectors and methods for a specific page
@@ -18,6 +18,10 @@ class LoginPage extends Page {
 
     get btnSubmit () {
         return $('button[type="submit"]');
+    }
+
+    get flashAlert () {
+        return $('#flash');
     }
 
     /**
