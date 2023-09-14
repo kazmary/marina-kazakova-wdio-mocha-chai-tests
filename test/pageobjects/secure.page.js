@@ -1,19 +1,19 @@
-import { $ } from '@wdio/globals';
-import Page from './page';
+import { $ } from '@wdio/globals'
+import Page from './page'
 
 class SecurePage extends Page {
    
     get flashAlert () {
-        return $('#flash');
+        return $('#flash')
     }
 
     get logoutBtn () {
-        return $('a[href="/logout"]');
+        return $('a[href="/logout"]')
     }
         
     async logout () {
-        await this.logoutBtn.click();
+        await this.logoutBtn.click()
     }
 }
 
-module.exports = new SecurePage();
+export default new SecurePage()
