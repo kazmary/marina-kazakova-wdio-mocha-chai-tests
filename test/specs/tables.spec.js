@@ -1,29 +1,54 @@
-import { browser, expect } from '@wdio/globals';
-import TablesPage from '../pageobjects/tables.page';
+const forEach = require('mocha-each')
+import { expect } from '@wdio/globals'
+import TablesPage from '../pageobjects/tables.page'
 
 describe('Sorted Tables', () => {
+    forEach([
+        ['Last Name', TablesPage.getLastNames, 0],
+        ['First Name', TablesPage.getFirstNames, 1],
+        ['Email', TablesPage.getEmails, 2],
+        ['Web Site', TablesPage.getWebsites, 4],
+    ])
+        .it('should sort %s column in ASC order', async (header, dataFunction, i) => {
+            // Load data from the page
+            await TablesPage.open()
+            const initialColumnValues = await dataFunction()
+            const currentHeaderElement = (await TablesPage.tableHeaders)[i]
 
-    before(async() => {
+            // Click on the header to sort in ASC order
+            await currentHeaderElement.click()
+            const columnValues = await dataFunction()
+
+            // Get the column values and sort it as strings
+            const sortedColumnValues = [...initialColumnValues].sort()
+
+            // Compare the sorted values to the actual values
+            expect(initialColumnValues).not.toEqual(sortedColumnValues)
+            expect(columnValues).toEqual(sortedColumnValues)
+        });
+
+    it('should sort Due column in ASC order', async () => {
         await TablesPage.open()
-    })
 
-    it('should sort columns in ASC order', async() => {
-        const lastName = TablesPage.tableHeaders[0];
-        expect(lastName).toHaveText('Last Name');
-        await lastName.click();
-        await browser.pause(1500);
-        let lastNamesArray = [];
-        await TablesPage.lastNames.forEach(lName => lastNamesArray.push(lName.getText()))
-        console.log(`Here comes array: ${lastNamesArray}`)
-        let sortedLastNamesArray = lastNamesArray.sort()
-        console.log(`Here comes sorted array: ${sortedLastNamesArray}`)
-        expect(lastNamesArray).toEqual(sortedLastNamesArray)
-    
-    })
+        // To sort currency values we need to turn them into numbers
+        let initialColumnValues = []
+        ;(await TablesPage.getDues()).forEach(dueValue => initialColumnValues.push(Number(dueValue.slice(1))))
+        
+        // Click on the header to sort in ASC order
+        await TablesPage.tableHeaders[3].click()
+        let columnValues = []
+        ;(await TablesPage.getDues()).forEach(dueValue => columnValues.push(Number(dueValue.slice(1))))
 
-    it('should sort columns in DESC order', async() => {
-        console.log('Coming soon...')
-    })
+        // Get the column values and sort it as numbers
+        const sortedColumnValues = [...initialColumnValues].sort((a,b) => a-b)
 
+        // Compare the sorted values to the actual values
+        expect(initialColumnValues).not.toEqual(sortedColumnValues)
+        expect(columnValues).toEqual(sortedColumnValues)
+    });
+
+    it.skip('should sort columns in DESC order', async () => {
+        console.log('Coming soon...');
+    });
 
 })

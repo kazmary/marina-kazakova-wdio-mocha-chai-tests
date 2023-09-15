@@ -15,8 +15,7 @@
   "author": "m-kazakova",
   "license": "ISC",
   "dependencies": {
-    "@wdio/cli": "^8.16.6",
-    "it-each": "^0.3.0"
+    "@wdio/cli": "^8.16.6"
   },
   "devDependencies": {
     "@babel/core": "^7.22.17",
@@ -27,6 +26,7 @@
     "@wdio/mocha-framework": "^8.16.3",
     "@wdio/spec-reporter": "^8.16.3",
     "chai": "^4.3.8",
-    "eslint": "^8.49.0"
+    "eslint": "^8.49.0",
+    "mocha-each": "^2.0.1"
   }
 }

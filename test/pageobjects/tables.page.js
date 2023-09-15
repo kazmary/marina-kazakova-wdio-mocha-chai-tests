@@ -5,50 +5,70 @@ class TablesPage extends Page {
     
     get tableHeaders () { return $$('#table1 th span'); }
 
-    get lastNames () { return $$('#table1 tr td:first-of-type'); }
-
-    get firstNames () { return $$('#table1 tr td:nth-of-type(2)'); }
-
-    get emails () { return $$('#table1 tr td:nth-of-type(3)'); }
-
-    get dues () { return $$('#table1 tr td:nth-of-type(4)'); }
-
-    get websites () { return $$('#table1 tr td:nth-of-type(5)'); }
-
-    getHeaders () {
-        let headersArray
-        this.tableHeaders.forEach(header => headersArray.push(header.getText()))
-        return headersArray
+    async getHeaders() {
+        const headersArray = [];
+        const tableHeaders = await $$('#table1 th span');
+    
+        for (const header of tableHeaders) {
+            headersArray.push(await header.getText());
+        }
+    
+        return headersArray;
     }
-
-    getLastNames () {
-        let lastNamesArray
-        this.lastNames.forEach(el => lastNamesArray.push(el.getText()))
-        return lastNamesArray
+    
+    async getLastNames() {
+        const lastNamesArray = [];
+        const lastNames = await $$('#table1 tr td:first-of-type');
+    
+        for (const lastName of lastNames) {
+            lastNamesArray.push(await lastName.getText());
+        }
+    
+        return lastNamesArray;
     }
-
-    getFirstNames () {
-        let firstNamesArray
-        this.firstNames.forEach(el => firstNamesArray.push(el.getText()))
-        return firstNamesArray
+    
+    async getFirstNames() {
+        const firstNamesArray = [];
+        const firstNames = await $$('#table1 tr td:nth-of-type(2)');
+    
+        for (const firstName of firstNames) {
+            firstNamesArray.push(await firstName.getText());
+        }
+    
+        return firstNamesArray;
     }
-
-    getEmails () {
-        let emailsArray
-        this.emails.forEach(el => emailsArray.push(el.getText()))
-        return emailsArray
+    
+    async getEmails() {
+        const emailsArray = [];
+        const emails = await $$('#table1 tr td:nth-of-type(3)');
+    
+        for (const email of emails) {
+            emailsArray.push(await email.getText());
+        }
+    
+        return emailsArray;
     }
-
-    getDues () {
-        let duesArray
-        this.dues.forEach(el => duesArray.push(el.getText()))
-        return duesArray
+    
+    async getDues() {
+        const duesArray = [];
+        const dues = await $$('#table1 tr td:nth-of-type(4)');
+    
+        for (const due of dues) {
+            duesArray.push(await due.getText());
+        }
+    
+        return duesArray;
     }
-
-    getWebsites () {
-        let websitesArray
-        this.websites.forEach(el => websitesArray.push(el.getText()))
-        return websitesArray
+    
+    async getWebsites() {
+        const websitesArray = [];
+        const websites = await $$('#table1 tr td:nth-of-type(5)');
+    
+        for (const website of websites) {
+            websitesArray.push(await website.getText());
+        }
+    
+        return websitesArray;
     }
 
     open () {
