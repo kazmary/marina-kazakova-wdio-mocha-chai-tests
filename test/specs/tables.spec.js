@@ -1,8 +1,12 @@
 const forEach = require('mocha-each')
-import { expect } from '@wdio/globals'
+import { expect, browser, $$ } from '@wdio/globals'
 import TablesPage from '../pageobjects/tables.page'
 
 describe('Tables ASC sorting', () => {
+
+    beforeEach(async()=> {
+        await TablesPage.open()
+    })
 
     forEach([
         ['Last Name', TablesPage.getLastNames, 0],
@@ -11,7 +15,6 @@ describe('Tables ASC sorting', () => {
         ['Web Site', TablesPage.getWebsites, 4],
     ]).it('should sort %s column in ASC order', async (header, dataFunction, i) => {
         // Load data from the page
-        await TablesPage.open()
         const initialColumnValues = await dataFunction()
         const currentHeaderElement = (await TablesPage.tableHeaders)[i]
 
@@ -28,8 +31,6 @@ describe('Tables ASC sorting', () => {
     })
 
     it('should sort Due column in ASC order', async () => {
-        await TablesPage.open()
-
         // To sort currency values we need to turn them into numbers
         let initialColumnValues = []
         ;(await TablesPage.getDues()).forEach(dueValue => initialColumnValues.push(Number(dueValue.slice(1))))
@@ -50,6 +51,10 @@ describe('Tables ASC sorting', () => {
 
 describe('Tables DESC sorting', () => {
 
+    beforeEach(async()=> {
+        await TablesPage.open()
+    })
+
     forEach([
         ['Last Name', TablesPage.getLastNames, 0],
         ['First Name', TablesPage.getFirstNames, 1],
@@ -58,7 +63,6 @@ describe('Tables DESC sorting', () => {
     ])
         .it('should sort %s column in ASC order', async (header, dataFunction, i) => {
             // Load data from the page
-            await TablesPage.open()
             const initialColumnValues = await dataFunction()
             const currentHeaderElement = (await TablesPage.tableHeaders)[i]
 
@@ -75,8 +79,6 @@ describe('Tables DESC sorting', () => {
         })
 
     it('should sort Due column in DESC order', async () => {
-        await TablesPage.open()
-
         // To sort currency values we need to turn them into numbers
         let initialColumnValues = []
         ;(await TablesPage.getDues()).forEach(dueValue => initialColumnValues.push(Number(dueValue.slice(1))))
@@ -93,4 +95,35 @@ describe('Tables DESC sorting', () => {
         expect(initialColumnValues).not.toEqual(sortedColumnValues)
         expect(columnValues).toEqual(sortedColumnValues)
     })
+})
+
+describe('Tables clickable elements', () => {
+
+    before(async() => {
+        await TablesPage.open()
+    })
+
+    it('should be interactive', async () => {
+        TablesPage.edits.forEach(async el => await expect(el).toBeClickable())
+        TablesPage.deletes.forEach(async el => await expect(el).toBeClickable())
+
+        TablesPage.edits.forEach(async el => await expect(el).toHaveHref('#edit'))
+        TablesPage.deletes.forEach(async el => await expect(el).toHaveHref('#delete'))
+
+    })
+    
+    it('should redirect', async () => {
+        const clickables = await $$('#table1 td:last-of-type a')
+    
+        console.log(`Array length: ${clickables.length}`)
+        for (let i = 0; i < clickables.length; i++) {
+            await clickables[i].click()
+            if(i === 0 || i % 2 === 0){
+                expect(await browser.getUrl()).toHaveText('#edit')
+            } else {
+                expect(await browser.getUrl()).toHaveText('#delete')  
+            }
+        }
+    })
+
 })

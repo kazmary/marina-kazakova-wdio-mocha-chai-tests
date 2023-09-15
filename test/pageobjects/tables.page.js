@@ -5,6 +5,10 @@ class TablesPage extends Page {
     
     get tableHeaders () { return $$('#table1 th span'); }
 
+    get edits () { return $$('#table1 td:last-of-type a:first-of-type'); }
+    
+    get deletes () { return $$('#table1 td:last-of-type a:last-of-type'); }
+
     async getHeaders() {
         const headersArray = [];
         const tableHeaders = await $$('#table1 th span');
