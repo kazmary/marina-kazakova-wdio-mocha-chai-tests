@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const { expect } = require('chai')
 import { browser } from '@wdio/globals'
 import HoversPage from '../pageobjects/hovers.page'
 
