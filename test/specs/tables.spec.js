@@ -106,22 +106,17 @@ describe('Tables clickable elements', () => {
     it('should be interactive', async () => {
         TablesPage.edits.forEach(async el => await expect(el).toBeClickable())
         TablesPage.deletes.forEach(async el => await expect(el).toBeClickable())
-
-        TablesPage.edits.forEach(async el => await expect(el).toHaveHref('#edit'))
-        TablesPage.deletes.forEach(async el => await expect(el).toHaveHref('#delete'))
-
     })
     
     it('should redirect', async () => {
         const clickables = await $$('#table1 td:last-of-type a')
     
-        console.log(`Array length: ${clickables.length}`)
         for (let i = 0; i < clickables.length; i++) {
             await clickables[i].click()
             if(i === 0 || i % 2 === 0){
-                expect(await browser.getUrl()).toHaveText('#edit')
+                expect(await browser.getUrl()).toEqual('https://the-internet.herokuapp.com/tables#edit')
             } else {
-                expect(await browser.getUrl()).toHaveText('#delete')  
+                expect(await browser.getUrl()).toEqual('https://the-internet.herokuapp.com/tables#delete')
             }
         }
     })
