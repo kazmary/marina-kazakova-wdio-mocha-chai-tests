@@ -4,7 +4,8 @@
   "description": "take home task",
   "main": "index.js",
   "scripts": {
-    "test": "npx wdio run ./wdio.conf.js",
+    "test": "npx wdio run wdio.conf.js",
+    "test:headless": "npx wdio run headless.conf.js",
     "lint": "eslint ./"
   },
   "keywords": [],
@@ -12,7 +13,7 @@
     "type": "git",
     "url": "git@github.com:kazmary/marina-kazakova-wdio-mocha-chai-tests.git"
   },
-  "author": "m-kazakova",
+  "author": "kazmary",
   "license": "ISC",
   "dependencies": {
     "@wdio/cli": "^8.16.6"
