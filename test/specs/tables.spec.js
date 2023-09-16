@@ -1,5 +1,6 @@
 const forEach = require('mocha-each')
-import { expect, browser, $$ } from '@wdio/globals'
+import { expect } from 'chai'
+import { browser, $$ } from '@wdio/globals'
 import TablesPage from '../pageobjects/tables.page'
 
 describe('Tables ASC sorting', () => {
@@ -26,8 +27,8 @@ describe('Tables ASC sorting', () => {
         const sortedColumnValues = [...initialColumnValues].sort()
 
         // Compare the sorted values to the actual values
-        expect(initialColumnValues).not.toEqual(sortedColumnValues)
-        expect(columnValues).toEqual(sortedColumnValues)
+        expect(initialColumnValues).to.not.eql(sortedColumnValues)
+        expect(columnValues).to.eql(sortedColumnValues)
     })
 
     it('should sort Due column in ASC order', async () => {
@@ -44,8 +45,8 @@ describe('Tables ASC sorting', () => {
         const sortedColumnValues = [...initialColumnValues].sort((a,b) => a-b)
 
         // Compare the sorted values to the actual values
-        expect(initialColumnValues).not.toEqual(sortedColumnValues)
-        expect(columnValues).toEqual(sortedColumnValues)
+        expect(initialColumnValues).not.to.eql(sortedColumnValues)
+        expect(columnValues).to.eql(sortedColumnValues)
     })
 })
 
@@ -74,8 +75,8 @@ describe('Tables DESC sorting', () => {
             const descColumnValues = [...columnValues].sort().reverse()
 
             // Compare the sorted values to the actual values
-            expect(initialColumnValues).not.toEqual(descColumnValues)
-            expect(columnValues).toEqual(descColumnValues)
+            expect(initialColumnValues).to.not.eql(descColumnValues)
+            expect(columnValues).to.eql(descColumnValues)
         })
 
     it('should sort Due column in DESC order', async () => {
@@ -92,8 +93,8 @@ describe('Tables DESC sorting', () => {
         const sortedColumnValues = [...initialColumnValues].sort((a,b) => b-a)
 
         // Compare the sorted values to the actual values
-        expect(initialColumnValues).not.toEqual(sortedColumnValues)
-        expect(columnValues).toEqual(sortedColumnValues)
+        expect(initialColumnValues).to.not.eql(sortedColumnValues)
+        expect(columnValues).to.eql(sortedColumnValues)
     })
 })
 
@@ -104,8 +105,8 @@ describe('Tables clickable elements', () => {
     })
 
     it('should be interactive', async () => {
-        TablesPage.edits.forEach(async el => await expect(el).toBeClickable())
-        TablesPage.deletes.forEach(async el => await expect(el).toBeClickable())
+        TablesPage.edits.forEach(async el => await expect(el).to.be.clickable)
+        TablesPage.deletes.forEach(async el => await expect(el).to.be.clickable)
     })
     
     it('should redirect', async () => {
@@ -114,9 +115,9 @@ describe('Tables clickable elements', () => {
         for (let i = 0; i < clickables.length; i++) {
             await clickables[i].click()
             if(i === 0 || i % 2 === 0){
-                expect(await browser.getUrl()).toEqual('https://the-internet.herokuapp.com/tables#edit')
+                expect(await browser.getUrl()).to.equal('https://the-internet.herokuapp.com/tables#edit')
             } else {
-                expect(await browser.getUrl()).toEqual('https://the-internet.herokuapp.com/tables#delete')
+                expect(await browser.getUrl()).to.equal('https://the-internet.herokuapp.com/tables#delete')
             }
         }
     })
