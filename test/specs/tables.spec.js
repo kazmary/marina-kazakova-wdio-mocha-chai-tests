@@ -111,7 +111,8 @@ describe('Tables clickable elements', () => {
     
     it('should redirect', async () => {
         const clickables = await $$('#table1 td:last-of-type a')
-    
+
+        // Verify Url changing according to the link clicked
         for (let i = 0; i < clickables.length; i++) {
             await clickables[i].click()
             if(i === 0 || i % 2 === 0){

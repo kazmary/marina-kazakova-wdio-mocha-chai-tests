@@ -1,41 +1,52 @@
-import { expect, browser } from '@wdio/globals';
-import LoginPage from '../pageobjects/login.page';
-import SecurePage from '../pageobjects/secure.page';
+import { browser } from '@wdio/globals'
+import { expect } from 'chai'
+import LoginPage from '../pageobjects/login.page'
+import SecurePage from '../pageobjects/secure.page'
 
 describe('My Login application', () => {
-    it('should login with valid credentials', async () => {
+    
+    beforeEach(async() => {
         await LoginPage.open()
-
-        await LoginPage.login('tomsmith', 'SuperSecretPassword!')
-        await expect(SecurePage.flashAlert).toBeExisting()
-        await expect(SecurePage.flashAlert).toHaveTextContaining(
-            'You logged into a secure area!')
     })
 
-    it('should successfully logout', async () => {
-        await SecurePage.logout()
-        await expect(LoginPage.flashAlert).toBeExisting()
-        await expect(LoginPage.flashAlert).toHaveTextContaining(
-            'You logged out of the secure area!')
-        await expect(browser).toHaveUrlContaining('/login')
+    it('should login with valid credentials', async () => {
+
+        await LoginPage.login('tomsmith', 'SuperSecretPassword!')
+        expect(SecurePage.flashAlert).to.exist
+        expect(await SecurePage.flashAlert.getText()).to.contain(
+            'You logged into a secure area!')
     })
     
     it('should fail to login with wrong username', async () => {
-        await LoginPage.open()
-
         await LoginPage.login('marina', 'SuperSecretPassword!')
-        await expect(SecurePage.flashAlert).toBeExisting()
-        await expect(SecurePage.flashAlert).toHaveTextContaining(
+        expect(SecurePage.flashAlert).to.exist
+        expect(await SecurePage.flashAlert.getText()).to.contain(
             'Your username is invalid!')
     })
 
     it('should fail to login with wrong password', async () => {
-        await LoginPage.open()
-
         await LoginPage.login('tomsmith', 'NOT-SuperSecretPassword!')
-        await expect(SecurePage.flashAlert).toBeExisting()
-        await expect(SecurePage.flashAlert).toHaveTextContaining(
+        expect(SecurePage.flashAlert).to.exist
+        expect(await SecurePage.flashAlert.getText()).to.contain(
             'Your password is invalid!')
+    })
+        
+})
+    
+describe('Logout application', () => {
+
+    before(async() => {
+        await LoginPage.open()
+        await LoginPage.login('tomsmith', 'SuperSecretPassword!')
+    })
+
+    it('should successfully logout', async () => {
+        await SecurePage.logout()
+        const currentUrl = await browser.getUrl();
+        expect(LoginPage.flashAlert).to.exist
+        expect(await LoginPage.flashAlert.getText()).to.contain(
+            'You logged out of the secure area!')
+        expect(currentUrl).to.contain('/login')
     })
 
 })

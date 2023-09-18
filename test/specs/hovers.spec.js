@@ -11,6 +11,8 @@ describe('Hover over elements', () => {
     it('should keep user info NOT revealed', async () => {
         const userNames = await HoversPage.userNames
         const profileLinks = await HoversPage.profileLinks
+
+        // Verify elements with user's info stay initially not visible
         for (let i = 0; i < userNames.length; i++) {
             expect(await userNames[i].isDisplayed()).to.be.false
             expect(await profileLinks[i].isDisplayed()).to.be.false
@@ -21,7 +23,8 @@ describe('Hover over elements', () => {
         const userImages = await HoversPage.userImages
         const profileLinks = await HoversPage.profileLinks
         const userNames = await HoversPage.userNames
-        
+
+        // Verify elements with user's info appear when img hovered over
         for (let i = 0; i < profileLinks.length; i++) {
             await userImages[i].moveTo()
             expect(await userNames[i].getText()).to.equal(`name: user${i+1}`)
@@ -40,7 +43,8 @@ describe('Redirect to profile page', () => {
 
         const userImages = await HoversPage.userImages
         const profileLinks = await HoversPage.profileLinks
-    
+
+        // Redirect to a certain user page
         for (let i = 0; i < profileLinks.length; i++) {
             await userImages[i].moveTo()
             await profileLinks[i].click()
