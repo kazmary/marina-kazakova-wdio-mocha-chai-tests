@@ -21,7 +21,13 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout
-      - run: node --version
+      - run: node --version- 
+      - run:
+          name: Install Google Chrome
+          command: |
+            wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            sudo dpkg -i google-chrome-stable_current_amd64.deb
+            sudo apt-get -f install
       # Next, the node orb's install-packages step will install the dependencies from a package.json.
       # The orb install-packages step will also automatically cache them for faster future runs.
       - node/install-packages:
