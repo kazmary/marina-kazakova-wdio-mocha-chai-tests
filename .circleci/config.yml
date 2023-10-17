@@ -21,7 +21,7 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout
-      - run: node --version- 
+      - run: node --version 
       - run:
           name: Install Google Chrome
           command: |
